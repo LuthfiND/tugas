@@ -22,7 +22,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             <p className='text-center font-semibold text-xl'>
             {new Date(event.start_date).toLocaleDateString('en-GB', {
                 day: '2-digit',
-                month: 'long'
+                month: 'long' // test
             })}   
             </p>        
             </div>
