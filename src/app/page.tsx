@@ -56,7 +56,7 @@ export default function Home() {
           <Button variant={"main"} size={"lg"}>Search</Button>
             </div>
       </div>
-      <div className="w-full mt-48 mx-32">
+      <div className=" mt-48 mx-14">
        <EventsPage events={events}/>
       </div>
    

@@ -1,7 +1,6 @@
 
 import { Event } from '@/lib/types'
 import React from 'react'
-import { CardContent } from '../ui/card';
 import EventCard from '../eventCard';
 
 type EventsPageProps = {
@@ -9,8 +8,8 @@ type EventsPageProps = {
 }
 const EventsPage = ({events} : EventsPageProps) => {
   return (
-    <div className='w-full'>
-        <div className='mb-10 w-full'>
+    <div className='mx-10 '>
+        <div className='mb-10'>
         <p className='font-bold text-3xl'>Upcoming Events</p>
         </div>
         <div className='flex items-center justify-between'>
