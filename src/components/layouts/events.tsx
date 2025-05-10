@@ -19,7 +19,6 @@ const EventsPage = ({events} : EventsPageProps) => {
     <EventCard key={event.id} event={event} />
   ))
 ) : (
-  // Tampilkan 3 skeleton cards saat loading
   Array.from({ length: 4 }).map((_, i) => <SkeletonEventCard key={i} />)
 )}
 
