@@ -1,9 +1,91 @@
-import React from 'react'
+"use client"
 
-const page = () => {
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+
+    try {
+      if (email === "admin@example.com" && password === "password123") {
+        router.push("/dashboard")
+      } else {
+        alert("Email atau password salah")
+      }
+    } catch (error) {
+      console.error(error)
+      alert("Terjadi kesalahan saat login")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div>page</div>
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+      {/* Kiri: Form Login */}
+      <div className="flex items-center justify-center p-8 bg-white">
+        <div className="w-full max-w-sm space-y-6">
+          <div className="text-3xl font-bold text-center">Login</div>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <div className="text-right mt-1">
+                <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
+            </div>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Loading..." : "Login"}
+            </Button>
+          </form>
+          <div className="text-center text-sm">
+            Belum punya akun?{" "}
+            <Link href="/signup" className="text-blue-600 hover:underline">
+              Sign Up
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Kanan: Gambar */}
+      <div className="hidden md:block relative">
+        <Image
+          src="/bglogin2.jpg"
+          alt="Login illustration"
+          fill
+          className="object-cover"
+        />
+      </div>
+    </div>
   )
 }
-
-export default page
