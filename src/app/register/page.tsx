@@ -112,7 +112,7 @@ export default function SignupPage() {
       {/* Kanan: Gambar */}
       <div className="hidden md:block relative">
         <Image
-          src="/bglogin2.jpg" // Ganti sesuai nama file gambar kamu
+          src="/bglogin2.jpg" 
           alt="Signup illustration"
           fill
           className="object-cover"
