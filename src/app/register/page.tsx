@@ -19,18 +19,36 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-
+  
     try {
-      console.log({ fullName, email, password, referral })
-      alert("Pendaftaran berhasil!")
+      const res = await fetch("http://localhost:8000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: fullName, 
+          email,
+          password,
+          referralCode: referral, 
+        }),
+      })
+  
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData?.message || "Register gagal")
+      }
+  
+      const data = await res.json()
+      alert("Pendaftaran berhasil! Silakan login.")
+  
+      // Redirect ke login setelah sukses
       router.push("/login")
-    } catch (error) {
-      console.error(error)
-      alert("Terjadi kesalahan saat mendaftar")
+    } catch (error: any) {
+      alert(error.message || "Terjadi kesalahan saat register")
     } finally {
       setLoading(false)
     }
   }
+  
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
