@@ -4,6 +4,7 @@ import { Geist, Geist_Mono,Poppins,Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import {Providers} from '@/store/provider'
 import NavbarPage from "@/components/layouts/Navbar";
+import AppLayout from "@/components/layouts/AppLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,8 +48,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
         <Providers>
-          <NavbarPage/>
-    {children}
+           <AppLayout>{children}</AppLayout>
         </Providers>
       </body>
     </html>
