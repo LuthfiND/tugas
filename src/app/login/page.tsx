@@ -17,21 +17,30 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-
+  
     try {
-      if (email === "admin@example.com" && password === "password123") {
-        router.push("/dashboard")
-      } else {
-        alert("Email atau password salah")
+      const res = await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+  
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data?.message || "Login gagal")
       }
-    } catch (error) {
-      console.error(error)
-      alert("Terjadi kesalahan saat login")
+  
+      const data = await res.json()
+      // Simpan token kalau ada
+      localStorage.setItem("token", data.token)
+  
+      router.push("/")
+    } catch (error: any) {
+      alert(error.message)
     } finally {
       setLoading(false)
     }
   }
-
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       {/* Kiri: Form Login */}

@@ -11,7 +11,7 @@ const NavbarPage = () => {
         <div className='w-11/12 mx-auto flex items-center justify-between'>
         <div className=' text-[#4F4CEE] fw-bold text-2xl'> KARCIS.COM</div>
         <div className='flex items-center gap-4'>
-         <Button variant={"outline"} size={"lg"}>Register</Button>
+         <Button variant={"outline"} size={"lg"} onClick={()=>router.push('/register')}>Register</Button>
          <Button variant={'main'} size={"lg"} onClick={()=>router.push('/login')}>Login</Button>
         </div>
         </div>
