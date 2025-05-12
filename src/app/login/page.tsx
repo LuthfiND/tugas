@@ -31,8 +31,9 @@ export default function LoginPage() {
       }
   
       const data = await res.json()
-      // Simpan token kalau ada
+      
       localStorage.setItem("token", data.token)
+      localStorage.setItem("fullName", data.data.fullName) 
   
       router.push("/")
     } catch (error: any) {
