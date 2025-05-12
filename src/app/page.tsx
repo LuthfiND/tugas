@@ -1,4 +1,3 @@
-'use client'
 import EventsPage from "@/components/layouts/events";
 import NavbarPage from "@/components/layouts/Navbar";
 import { Button } from "@/components/ui/button";
@@ -6,21 +5,11 @@ import { DatePickerDemo } from "@/components/ui/datePicker";
 import { Event } from "@/lib/types";
 import axios from "axios";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
-export default function Home() {
-  const [events,setEvents] = useState<Event[]>([])
-  const getEvents = async ()=> {
-    const response = await axios.get('/api/events')
-    setEvents(response.data.data)
+export default  async function Home() {
 
-  }
-  useEffect(()=> {
-    getEvents()
-  },[])
   return (
     <div className="w-full">
-      <NavbarPage/>
       <div className="flex w-11/12 mx-auto justify-between">
       <Image
         src="/lamp.png"
@@ -57,7 +46,7 @@ export default function Home() {
             </div>
       </div>
       <div className=" mt-48 mx-14">
-       <EventsPage events={events}/>
+       <EventsPage/>
       </div>
    
     </div>

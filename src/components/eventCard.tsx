@@ -10,7 +10,7 @@ type EventCardProps = {
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
-    <Card className="w-full max-w-sm rounded-md  shadow-md p-0">
+    <Card className="w-full max-w-sm rounded-md  shadow-md p-0 gap-4">
       <img
         src={event.thumbnail_url}
         alt={event.title}
@@ -22,7 +22,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             <p className='text-center font-semibold text-xl'>
             {new Date(event.start_date).toLocaleDateString('en-GB', {
                 day: '2-digit',
-                month: 'long' // test
+                month: 'long' 
             })}   
             </p>        
             </div>
@@ -35,10 +35,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             </div>
         
       </div>
-        {/* <h3 className="text-xl font-bold">{event.title}</h3>
-        <p className="text-lg text-green-600 font-semibold mt-2">
-          Rp {event.price.toLocaleString()}
-        </p> */}
+    
       </CardContent>
     </Card>
   );

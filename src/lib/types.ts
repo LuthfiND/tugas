@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export interface Event {
   id: number;
   title: string;
@@ -33,3 +35,8 @@ export interface Event {
   pointExpiredDate: string;
   userReward: boolean;
 };
+
+export type ShareSocialMedia = {
+  Image : LucideIcon,
+  link : string
+}
