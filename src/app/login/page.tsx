@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   
-    const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter()
 
@@ -67,7 +67,7 @@ export default function LoginPage() {
           </form>
           <div className="text-center text-sm">
             Belum punya akun?{" "}
-            <Link href="/signup" className="text-blue-600 hover:underline">
+            <Link href="/register" className="text-blue-600 hover:underline">
               Sign Up
             </Link>
           </div>

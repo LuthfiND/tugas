@@ -24,6 +24,28 @@ const initialState: loginState = {
   fullname: null,
 };
 
+export const registerUser = createAsyncThunk(
+  "auth/registerUser",
+  async (userData: { fullName: string; email: string; password: string; referralCode?: string }, { rejectWithValue }) => {
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData?.message || "Register failed");
+      }
+
+      return await response.json();
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Terjadi kesalahan saat register");
+    }
+  }
+);
+
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (user: Login, { rejectWithValue }) => {
@@ -50,7 +72,7 @@ export const isAuthenticatedUser = createAsyncThunk(
       return true
     } catch (error) {
       console.error('API call failed:', error);
-      return rejectWithValue('User not authenticated');
+      //return rejectWithValue('User not authenticated');
     }
   }
 );
@@ -129,5 +151,9 @@ const authSlice = createSlice({
       });
   },
 });
+
+
+
+
 
 export default authSlice.reducer;
