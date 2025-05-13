@@ -38,6 +38,7 @@ export default function SignupPage() {
       }
   
       const data = await res.json()
+      localStorage.setItem('token', data.token) 
       alert("Pendaftaran berhasil! Silakan login.")
   
       // Redirect ke login setelah sukses

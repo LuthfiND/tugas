@@ -141,12 +141,16 @@ return (
     <Button size="lg" variant="main" className="mt-4">Buy Ticket</Button>
   </DialogTrigger>
 
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Confirm Purchase</DialogTitle>
-      <DialogDescription>
-         <div className="w-full px-4 py-4 flex flex-col gap-6">
-  <div className="flex justify-between items-center w-full">
+<DialogContent>
+  <DialogHeader>
+    <DialogTitle>Confirm Purchase</DialogTitle>
+    <DialogDescription>
+      Please review your purchase details before confirming.
+    </DialogDescription>
+  </DialogHeader>
+
+  <div className="w-full px-4 py-4 flex flex-col gap-6">
+    <div className="flex justify-between items-center w-full">
       <div className="w-full">
         <p className="text-sm font-medium">Quantity</p>
       </div>
@@ -160,45 +164,48 @@ return (
         </Button>
       </div>
     </div>
+
     <div className="flex justify-between items-center w-full">
       <div className="w-full">
         <p className="text-sm font-medium">Point ({events?.user?.point})</p>
       </div>
       <div className="">
-       <Switch id="Point" checked={checked} onCheckedChange={setChecked} />
+        <Switch id="Point" checked={checked} onCheckedChange={setChecked} />
       </div>
     </div>
-<div className="flex flex-col gap-2 w-full">
-  <p className="text-sm font-medium">Coupon Code</p>
-  <div className="flex items-center gap-2">
-    <Input className="flex-1" placeholder="Enter code" />
-    <Button variant="outline">Claim</Button>
-  </div>
-</div>
-<div className="flex flex-col gap-2 w-full">
-  <p className="text-sm font-medium">Voucher Code</p>
-  <div className="flex items-center gap-2">
-    <Input className="flex-1" placeholder="Enter code" />
-    <Button variant="outline">Claim</Button>
-  </div>
-</div>
-        <div className="flex justify-between items-center w-full">
-          <div className="">
-          <p className="text-sm font-medium">Price </p>
-        </div>
-        <div className="">
-      <p>Rp {((events?.price ?? 0) * quantity).toLocaleString()}</p>
-        </div>
+
+    <div className="flex flex-col gap-2 w-full">
+      <p className="text-sm font-medium">Coupon Code</p>
+      <div className="flex items-center gap-2">
+        <Input className="flex-1" placeholder="Enter code" />
+        <Button variant="outline">Claim</Button>
       </div>
-              </div>
-      </DialogDescription>
-    </DialogHeader>
-          
-    <DialogFooter>
-      <Button variant="outline">Cancel</Button>
-      <Button variant="main" onClick={handleTransaction}>Confirm</Button>
-    </DialogFooter>
-  </DialogContent>
+    </div>
+
+    <div className="flex flex-col gap-2 w-full">
+      <p className="text-sm font-medium">Voucher Code</p>
+      <div className="flex items-center gap-2">
+        <Input className="flex-1" placeholder="Enter code" />
+        <Button variant="outline">Claim</Button>
+      </div>
+    </div>
+
+    <div className="flex justify-between items-center w-full">
+      <div>
+        <p className="text-sm font-medium">Price</p>
+      </div>
+      <div>
+        <p>Rp {((events?.price ?? 0) * quantity).toLocaleString()}</p>
+      </div>
+    </div>
+  </div>
+
+  <DialogFooter>
+    <Button variant="outline">Cancel</Button>
+    <Button variant="main" onClick={handleTransaction}>Confirm</Button>
+  </DialogFooter>
+</DialogContent>
+
 </Dialog>
   </div>
 </div>

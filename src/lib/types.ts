@@ -46,3 +46,14 @@ export type MoreInformation = {
   text : string
   desc  : string
 }
+
+export type TCoupon = {
+  id: number;
+  code: string;
+  expirationDate: string;
+  discountAmount: number;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  isUse: boolean;
+}
