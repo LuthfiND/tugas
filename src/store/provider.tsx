@@ -6,6 +6,7 @@ import eventsReducer, { EventDetailState, EventsState } from './slices/EventsSli
 import authReducer , {loginState}  from './slices/AuthSlice'
 import { ReactNode } from 'react';
 import couponReducer, { CouponState } from './slices/CouponSlice';
+import transactionReducer, { initialStateType } from './slices/transactionSlice';
 
 export interface RootState {
   events: {
@@ -13,13 +14,16 @@ export interface RootState {
     eventDetail: EventDetailState; 
   };
   auth : loginState
-  coupon : CouponState
+  coupon : CouponState,
+  transaction : initialStateType
 }
+
 
 const rootReducer = combineReducers({
   events: eventsReducer, 
   auth : authReducer,
-  coupon : couponReducer
+  coupon : couponReducer,
+  transaction : transactionReducer
 });
 
 const makeStore = (preloadedState?: Partial<RootState>) => {
