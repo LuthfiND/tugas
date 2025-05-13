@@ -6,7 +6,7 @@ import eventsReducer, { EventDetailState, EventsState } from './slices/EventsSli
 import authReducer , {loginState}  from './slices/AuthSlice'
 import { ReactNode } from 'react';
 import couponReducer, { CouponState } from './slices/CouponSlice';
-import transactionReducer, { initialStateType } from './slices/transactionSlice';
+import transactionReducer, { initialStateType } from './slices/TransactionSlice';
 
 export interface RootState {
   events: {

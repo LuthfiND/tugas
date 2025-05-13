@@ -72,7 +72,20 @@ export const isAuthenticatedUser = createAsyncThunk(
       return true
     } catch (error) {
       console.error('API call failed:', error);
-      //return rejectWithValue('User not authenticated');
+      return rejectWithValue('');
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/auth/logout')
+      localStorage.removeItem('fullname');
+      return true;
+    } catch (error) {
+      return rejectWithValue('Failed to logout');
     }
   }
 );
@@ -140,6 +153,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
         state.isAuthenticated = false;
+        
         console.log('User is not authenticated', state.isAuthenticated);
       })
       .addCase(loadUserFromLocalStorage.fulfilled, (state, action) => {

@@ -4,12 +4,20 @@ import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/lib/store'
 import { useAppSelector } from '@/store/hooks'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/store/provider'
+import { logoutUser } from '@/store/slices/AuthSlice'
 
 const NavbarPage = () => {
     const router = useRouter()
   const authState = useAppSelector(state => state.auth);
   const authenticated = authState?.isAuthenticated || false;
   const fullname  = authState?.fullname
+  const dispatch = useDispatch<AppDispatch> ()
+
+  const logout = () => {
+    dispatch(logoutUser())
+  }
     return (
         <div className='w-full h-20 border-b-1 border-[#DDDDDE] bg-white flex items-center justify-center'>
             <div className='w-11/12 mx-auto flex items-center justify-between'>
@@ -22,7 +30,12 @@ const NavbarPage = () => {
                                 <Button variant={'main'} size={"lg"} onClick={() => router.push('/login')}>Login</Button>
                             </>
                         ) : (
-                            <span>Halo, {fullname}</span> 
+                            <>
+                                                        <span>Halo, {fullname}</span> 
+                                                            <Button variant={'outline'} size={"lg"} onClick={logout}>Logout</Button>
+                            </>
+                            
+
                         )
                     }
                 </div>
