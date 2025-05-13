@@ -7,39 +7,51 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "@/lib/store"
+import { loginUser } from "@/store/slices/AuthSlice"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  
+    const dispatch = useDispatch<AppDispatch>();
+
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    // setLoading(true)
   
-    try {
-      const res = await fetch("http://localhost:8000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      })
+    // try {
+    //   const res = await fetch("http://localhost:8000/api/auth/login", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ email, password }),
+    //   })
   
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data?.message || "Login gagal")
-      }
+    //   if (!res.ok) {
+    //     const data = await res.json()
+    //     throw new Error(data?.message || "Login gagal")
+    //   }
   
-      const data = await res.json()
-      // Simpan token kalau ada
-      localStorage.setItem("token", data.token)
+    //   const data = await res.json()
+    //   // Simpan token kalau ada
+    //   localStorage.setItem("token", data.token)
   
-      router.push("/")
-    } catch (error: any) {
-      alert(error.message)
-    } finally {
-      setLoading(false)
+    //   router.push("/")
+    // } catch (error: any) {
+    //   alert(error.message)
+    // } finally {
+    //   setLoading(false)
+    // }
+    const user = {
+      email,
+      password
     }
+    dispatch(loginUser(user))
+    router.push('/')
   }
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">

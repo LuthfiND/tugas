@@ -40,3 +40,9 @@ export type ShareSocialMedia = {
   Image : LucideIcon,
   link : string
 }
+
+export type MoreInformation = {
+  Image  : LucideIcon
+  text : string
+  desc  : string
+}

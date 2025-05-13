@@ -2,21 +2,27 @@
 
 import { Provider } from 'react-redux';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import eventsReducer, { EventsState } from './slices/EventsSlice';
+import eventsReducer, { EventDetailState, EventsState } from './slices/EventsSlice';
+import authReducer , {loginState}  from './slices/AuthSlice'
 import { ReactNode } from 'react';
 
 export interface RootState {
-  events: EventsState;
+  events: {
+    events: EventsState;
+    eventDetail: EventDetailState; 
+  };
+  auth : loginState
 }
 
 const rootReducer = combineReducers({
-  events: eventsReducer,
+  events: eventsReducer, 
+  auth : authReducer
 });
 
 const makeStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
-    preloadedState: preloadedState as RootState
+    preloadedState: preloadedState as Partial<RootState>,
   });
 };
 

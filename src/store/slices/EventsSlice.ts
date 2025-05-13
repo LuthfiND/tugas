@@ -47,6 +47,46 @@ export const fetchEvents = createAsyncThunk(
   }
 );
 
+export const postTransaction = createAsyncThunk(
+  'events/postTransaction',
+  async (
+    {
+      eventId,
+      qty,
+      isPointUse,
+      isUseCoupon,
+      userCouponId,
+      isUseVoucher,
+      userVoucherId,
+    }: {
+      eventId: number;
+      qty: number;
+      isPointUse: boolean;
+      isUseCoupon: boolean;
+
+      userCouponId: string | null;
+      isUseVoucher: boolean;
+      userVoucherId: string | null;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axios.post('/api/events/transaction', {
+        eventId,
+        qty,
+        isPointUse,
+        isUseCoupon,
+        userCouponId,
+        isUseVoucher,
+        userVoucherId,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue('Failed to post transaction');
+    }
+  }
+);
+
 export const fetchEventsDetails = createAsyncThunk<Event, string>(
   'events/fetchDetail',
   async (id, { rejectWithValue }) => {
@@ -88,6 +128,19 @@ const eventsSlice = createSlice({
         state.eventDetail.error = action.error.message || "Somethin went Wrong"
         state.eventDetail.loading = false
       })
+      .addCase(postTransaction.pending, (state) => {
+        state.events.loading = true;
+        state.events.error = null;
+      })
+      .addCase(postTransaction.fulfilled, (state, action) => {
+        state.events.loading = false;
+      }
+      )
+      .addCase(postTransaction.rejected, (state, action) => {
+        state.events.loading = false;
+        state.events.error = action.payload as string;
+      }
+      );
   },
 });
 

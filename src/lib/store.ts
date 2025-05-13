@@ -1,13 +1,18 @@
-// lib/redux/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import eventsReducer from '../store/slices/EventsSlice';
+import authReducer from '../store/slices/AuthSlice';
 
 export const makeStore = () => 
   configureStore({
     reducer: {
       events: eventsReducer,
+      auth : authReducer
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
     devTools: process.env.NODE_ENV !== 'production',
   });
 
