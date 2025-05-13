@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '@/lib/store'; // Sesuaikan dengan struktur Redux Anda
-import { uploadProof } from '@/store/slices/transactionSlice'; // Action Redux untuk upload
+import { uploadProof } from '@/store/slices/TransactionSlice';
 
 export default function ConfirmationPage() {
   const searchParams = useSearchParams();

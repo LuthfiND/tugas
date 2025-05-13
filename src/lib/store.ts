@@ -3,7 +3,7 @@ import { createWrapper } from 'next-redux-wrapper';
 import eventsReducer from '../store/slices/EventsSlice';
 import authReducer from '../store/slices/AuthSlice';
 import couponReducer from '../store/slices/CouponSlice';
-import transactionReducer from '../store/slices/transactionSlice';
+import transactionReducer from '../store/slices/TransactionSlice';
 
 
 export const makeStore = () => 
