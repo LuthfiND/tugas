@@ -87,6 +87,19 @@ export const postTransaction = createAsyncThunk(
   }
 );
 
+export const fetchTransactionDetail = createAsyncThunk(
+  'events/fetchTransactionDetail',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/api/events/transaction/${id}`);
+      return response.data;
+    }
+    catch (error) {
+      return rejectWithValue('Failed to fetch transaction detail');
+    }
+  }
+);
+
 export const fetchEventsDetails = createAsyncThunk<Event, string>(
   'events/fetchDetail',
   async (id, { rejectWithValue }) => {

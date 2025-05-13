@@ -22,6 +22,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { fetchCoupons } from "@/store/slices/CouponSlice";
+import { useRouter } from "next/navigation";
 
 
 const ShareToSocialMedia : ShareSocialMedia[] = [
@@ -67,6 +68,8 @@ const EventDetailPage =  ({ params }: { params: Promise<{ id: string }> }) => {
      if (quantity > 1) setQuantity(prev => prev - 1);
     };
 
+    const router = useRouter()
+
    const increase = () => {
      setQuantity(prev => prev + 1);
     };
@@ -76,11 +79,14 @@ const EventDetailPage =  ({ params }: { params: Promise<{ id: string }> }) => {
       useEffect(()=> {
     dispatch(fetchEventsDetails(id))
       },[id,dispatch])
-      const handleTransaction  =()=> {
+      const handleTransaction = async () => {
         const isUseCoupon = coupons?.code !== undefined
         console.log(coupons?.code)
         const isUseVoucher = voucher === events.Voucher?.[0]?.code
-        dispatch(postTransaction({ eventId: events?.id, qty: quantity, isPointUse: false, isUseCoupon: isUseCoupon, userCouponId: isUseCoupon ? coupons?.id ?? null : null, isUseVoucher: isUseVoucher, userVoucherId: isUseVoucher ?  events?.Voucher?.[0]?.id : null }))
+       const response = await dispatch(postTransaction({ eventId: events?.id, qty: quantity, isPointUse: false, isUseCoupon: isUseCoupon, userCouponId: isUseCoupon ? coupons?.id ?? null : null, isUseVoucher: isUseVoucher, userVoucherId: isUseVoucher ?  events?.Voucher?.[0]?.id : null })).unwrap()
+       console.log(response.data.data.id,'response')
+       const {id} = response.data.data
+       router.push(`/confirmation/${id}`)
       }
       function calculateTotalPrice(
   price: number | undefined,

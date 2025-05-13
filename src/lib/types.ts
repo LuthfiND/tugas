@@ -71,3 +71,25 @@ export type TCoupon = {
   userId: number;
   isUse: boolean;
 }
+
+
+
+export type Transaction = {
+  id: number;
+  invoice: string;
+  createdAt: string;
+  updatedAt: string;
+  status: "EXPIRED" | "PENDING" | "PAID" | "CANCELLED";
+  total: number;
+  userId: number;
+  eventId: number;
+  paymentProof: string;
+  userCouponId: number | null;
+  userVoucherId: number | null;
+  qty: number;
+  isPointUse: boolean;
+  isUseCoupon: boolean;
+  isUseVoucher: boolean;
+  user: User;
+  event: Event;
+};
