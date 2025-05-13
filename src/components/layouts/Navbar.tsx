@@ -17,6 +17,7 @@ const NavbarPage = () => {
 
   const logout = () => {
     dispatch(logoutUser())
+    router.push('/login')
   }
     return (
         <div className='w-full h-20 border-b-1 border-[#DDDDDE] bg-white flex items-center justify-center'>

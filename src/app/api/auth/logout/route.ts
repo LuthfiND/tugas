@@ -6,6 +6,5 @@ export async function POST(req : Request) {
   const cookieStore = await cookies();
   await cookieStore.delete("accessToken");
   await cookieStore.delete("userId");
-const url = new URL("/", req.url)
-  return NextResponse.redirect(url);
+  return NextResponse.json({ message: "Logout successful" }, { status: 200 });
 }
