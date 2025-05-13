@@ -22,30 +22,6 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    // setLoading(true)
-  
-    // try {
-    //   const res = await fetch("http://localhost:8000/api/auth/login", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({ email, password }),
-    //   })
-  
-    //   if (!res.ok) {
-    //     const data = await res.json()
-    //     throw new Error(data?.message || "Login gagal")
-    //   }
-  
-    //   const data = await res.json()
-    //   // Simpan token kalau ada
-    //   localStorage.setItem("token", data.token)
-  
-    //   router.push("/")
-    // } catch (error: any) {
-    //   alert(error.message)
-    // } finally {
-    //   setLoading(false)
-    // }
     const user = {
       email,
       password

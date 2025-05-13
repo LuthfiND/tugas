@@ -64,9 +64,9 @@ export const postTransaction = createAsyncThunk(
       isPointUse: boolean;
       isUseCoupon: boolean;
 
-      userCouponId: string | null;
+      userCouponId: number | null;
       isUseVoucher: boolean;
-      userVoucherId: string | null;
+      userVoucherId: number | null;
     },
     { rejectWithValue }
   ) => {

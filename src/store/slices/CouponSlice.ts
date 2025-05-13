@@ -3,7 +3,7 @@ import { TCoupon } from "@/lib/types";
 import axios from "axios";
 
 
-type CouponState = {
+export type CouponState = {
     coupons: TCoupon | null;
     loading: boolean;
     error: string | null;
@@ -18,9 +18,10 @@ export const fetchCoupons = createAsyncThunk(
     'coupons/fetchCoupons',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axios.get('/api/coupons');
+            const response = await axios.get(`/api/coupon`);
+            console.log('Response from coupon API:', response.data);
             const data = response.data;
-            return data.data as TCoupon;
+            return data as TCoupon;
         } catch (error) {
             return rejectWithValue('Failed to fetch coupons');
         }

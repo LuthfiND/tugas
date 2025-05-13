@@ -18,7 +18,9 @@ export interface Event {
   category: string;
   price: number;
   userId: number;
-  user : User
+  user : User,
+  Voucher : Voucher[]
+
 }
 
  type User = {
@@ -34,6 +36,18 @@ export interface Event {
   point: number;
   pointExpiredDate: string;
   userReward: boolean;
+};
+
+export type Voucher = {
+  id: number;
+  code: string;
+  discountAmount: number;
+  limit: number;
+  expirationDate: string; 
+  createdAt: string;     
+  updatedAt: string;    
+  userId: number;
+  eventId: number;
 };
 
 export type ShareSocialMedia = {

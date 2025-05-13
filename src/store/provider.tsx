@@ -5,7 +5,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import eventsReducer, { EventDetailState, EventsState } from './slices/EventsSlice';
 import authReducer , {loginState}  from './slices/AuthSlice'
 import { ReactNode } from 'react';
-import couponReducer, { CouponState } from './slices/Coupon';
+import couponReducer, { CouponState } from './slices/CouponSlice';
 
 export interface RootState {
   events: {

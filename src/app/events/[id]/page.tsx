@@ -1,4 +1,5 @@
 'use client'
+import React from "react";
 import { Event, MoreInformation, ShareSocialMedia } from "@/lib/types"
 import { RootState, AppDispatch } from '@/lib/store';
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +21,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { fetchCoupons } from "@/store/slices/CouponSlice";
 
 
 const ShareToSocialMedia : ShareSocialMedia[] = [
@@ -58,6 +60,9 @@ const EventDetailPage =  ({ params }: { params: Promise<{ id: string }> }) => {
       const dispatch = useDispatch<AppDispatch>();
       const [quantity,setQuantity] = useState<number> (1)
       const [checked, setChecked] = useState(false);
+      const [voucher,setVoucher] = useState <string | null>(null)
+      const [message,setMessage] = useState<string | null >(null)
+      const [valid,setValid] = useState(false)
       const decrease = () => {
      if (quantity > 1) setQuantity(prev => prev - 1);
     };
@@ -66,12 +71,45 @@ const EventDetailPage =  ({ params }: { params: Promise<{ id: string }> }) => {
      setQuantity(prev => prev + 1);
     };
       const { item: events, loading } = useSelector((state: RootState & { events: { eventDetail: { item: Event; loading: boolean } } }) => state.events.eventDetail);
+            const { coupons } = useSelector((state: RootState) => state.coupon);
+
       useEffect(()=> {
     dispatch(fetchEventsDetails(id))
       },[id,dispatch])
       const handleTransaction  =()=> {
-        dispatch(postTransaction({ eventId: events?.id, qty: quantity, isPointUse: false, isUseCoupon: false, userCouponId: null, isUseVoucher: false, userVoucherId: null }))
+        const isUseCoupon = coupons?.code !== undefined
+        console.log(coupons?.code)
+        const isUseVoucher = voucher === events.Voucher?.[0]?.code
+        dispatch(postTransaction({ eventId: events?.id, qty: quantity, isPointUse: false, isUseCoupon: isUseCoupon, userCouponId: isUseCoupon ? coupons?.id ?? null : null, isUseVoucher: isUseVoucher, userVoucherId: isUseVoucher ?  events?.Voucher?.[0]?.id : null }))
       }
+      function calculateTotalPrice(
+  price: number | undefined,
+  quantity: number,
+  discount: number | undefined
+): string {
+  let total = (price ?? 0) * quantity - (discount ?? 0);
+  if (valid) {
+    total -= (events?.Voucher?.[0]?.discountAmount ?? 0)
+  }
+  return total.toLocaleString();
+}
+    const checkCoupon = () => {
+      dispatch(fetchCoupons())
+   
+    }
+    const checkVoucher = () => {
+      if(!voucher)  {
+        setValid(false)
+      } 
+      console.log(events.Voucher,'event code')
+     if (voucher !== events.Voucher?.[0]?.code) {
+      setValid(false)
+      setMessage("Voucher Tidak Valid!")
+} else {
+  setMessage(null);
+  setValid(true)
+}
+    }
 return (
 <div className="w-10/12 mx-auto mt-32 h-[calc(100vh-6rem)]">
   <div className="flex gap-10 h-1/2">
@@ -177,25 +215,38 @@ return (
     <div className="flex flex-col gap-2 w-full">
       <p className="text-sm font-medium">Coupon Code</p>
       <div className="flex items-center gap-2">
-        <Input className="flex-1" placeholder="Enter code" />
-        <Button variant="outline">Claim</Button>
+        <Input  value={coupons?.code} disabled  className="flex-1 fw-bold" placeholder="Enter code" />
+        <Button variant="outline" onClick={checkCoupon}>Claim</Button>
       </div>
     </div>
+<div className="flex flex-col gap-2 w-full">
+  <p className="text-sm font-medium">Voucher Code</p>
+  <div className="flex items-center gap-2">
+    <Input
+      onChange={(e) => {
+        const value = e.target.value;
+        setVoucher(value);
+        if (value === "") {
+          setMessage(null);
+        }
+      }}
+      className="flex-1"
+      placeholder="Enter code"
+    />
+    <Button onClick={checkVoucher} variant="outline">Claim</Button>
+  </div>
 
-    <div className="flex flex-col gap-2 w-full">
-      <p className="text-sm font-medium">Voucher Code</p>
-      <div className="flex items-center gap-2">
-        <Input className="flex-1" placeholder="Enter code" />
-        <Button variant="outline">Claim</Button>
-      </div>
-    </div>
+  {!valid && (
+    <p className="text-sm text-red-500">{message}</p>
+  )}
+</div>
 
     <div className="flex justify-between items-center w-full">
       <div>
         <p className="text-sm font-medium">Price</p>
       </div>
       <div>
-        <p>Rp {((events?.price ?? 0) * quantity).toLocaleString()}</p>
+<p>Rp {calculateTotalPrice(events?.price, quantity, coupons?.discountAmount)}</p>
       </div>
     </div>
   </div>
