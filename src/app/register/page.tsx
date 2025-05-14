@@ -1,54 +1,39 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { registerUser } from "@/store/slices/AuthSlice";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function SignupPage() {
-  const router = useRouter()
-  const [fullName, setFullName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [referral, setReferral] = useState("")
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.auth);
+
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [referral, setReferral] = useState("");
 
   const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-  
-    try {
-      const res = await fetch("http://localhost:8000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: fullName, 
-          email,
-          password,
-          referralCode: referral, 
-        }),
-      })
-  
-      if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData?.message || "Register gagal")
-      }
-  
-      const data = await res.json()
-      alert("Pendaftaran berhasil! Silakan login.")
-  
-      // Redirect ke login setelah sukses
-      router.push("/login")
-    } catch (error: any) {
-      alert(error.message || "Terjadi kesalahan saat register")
-    } finally {
-      setLoading(false)
+    e.preventDefault();
+
+    const result = await dispatch(
+      registerUser({ fullName, email, password, referralCode: referral })
+    );
+
+    if (registerUser.fulfilled.match(result)) {
+      alert("Pendaftaran berhasil! Silakan login.");
+      router.push("/login");
+    } else if (registerUser.rejected.match(result)) {
+      alert(result.payload || "Terjadi kesalahan saat register");
     }
-  }
-  
+  };
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
@@ -100,6 +85,7 @@ export default function SignupPage() {
               {loading ? "Loading..." : "Sign Up"}
             </Button>
           </form>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className="text-center text-sm">
             Sudah punya akun?{" "}
             <Link href="/login" className="text-blue-600 hover:underline">
@@ -112,12 +98,12 @@ export default function SignupPage() {
       {/* Kanan: Gambar */}
       <div className="hidden md:block relative">
         <Image
-          src="/bglogin2.jpg" 
+          src="/bglogin2.jpg"
           alt="Signup illustration"
           fill
           className="object-cover"
         />
       </div>
     </div>
-  )
+  );
 }
