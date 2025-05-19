@@ -1,28 +1,26 @@
 import React from "react";
+import { Bar } from "react-chartjs-2"; // install chart.js & react-chartjs-2
 
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-}
+const Statistics: React.FC = () => {
+  // Dummy data, ganti dengan fetch dari API
+  const data = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+    datasets: [
+      {
+        label: "Tickets Sold",
+        data: [12, 19, 3, 5, 2],
+        backgroundColor: "rgba(59,130,246,0.5)",
+      },
+    ],
+  };
 
-const mockEvents: Event[] = [
-  { id: "e1", title: "Workshop React", date: "2025-06-20" },
-  { id: "e2", title: "Conference Next.js", date: "2025-07-05" },
-];
+  return (
+    <div>
+      <h2 className="text-2xl font-semibold mb-4">Event Statistics</h2>
+      <Bar data={data} />
+      {/* Tambahkan filter by year/month/day */}
+    </div>
+  );
+};
 
-const MyEvent: React.FC = () => (
-  <div>
-    <h2 className="text-2xl font-semibold mb-4">My Events</h2>
-    <ul className="space-y-3">
-      {mockEvents.map((ev) => (
-        <li key={ev.id} className="p-4 border rounded hover:shadow">
-          <h3 className="text-lg font-medium">{ev.title}</h3>
-          <p className="text-sm text-gray-600">Date: {ev.date}</p>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-export default MyEvent;
+export default Statistics;

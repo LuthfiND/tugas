@@ -1,34 +1,37 @@
-'use client';
+"use client";
 
-import { usePathname } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { isAuthenticatedUser, loadUserFromLocalStorage } from '@/store/slices/AuthSlice'; 
-import NavbarPage from '@/components/layouts/Navbar';
-import { useRouter } from 'next/navigation';
-import { AppDispatch, RootState } from '@/lib/store';
-import { useAppSelector } from '@/store/hooks';
+import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import {
+  isAuthenticatedUser,
+  loadUserFromLocalStorage,
+} from "@/store/slices/AuthSlice";
+import NavbarPage from "@/components/layouts/Navbar";
+import { useRouter } from "next/navigation";
+import { AppDispatch } from "@/lib/store";
+import { useAppSelector } from "@/store/hooks";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const authState = useAppSelector(state => state.auth);
-  const authenticated = authState?.isAuthenticated || false;
-
+  const authState = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-dispatch(isAuthenticatedUser()) 
-dispatch(loadUserFromLocalStorage()); 
-
+    dispatch(isAuthenticatedUser());
+    dispatch(loadUserFromLocalStorage());
   }, [dispatch]);
-  const hideNavbar = pathname === '/login' || pathname === '/register';
 
+  // Hide navbar on login/register page
+  const hideNavbar = pathname === "/login" || pathname === "/register";
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-white">
       {!hideNavbar && <NavbarPage />}
-      {children}
-    </>
+      <main className="flex-1 w-full max-w-full px-2 md:px-8 mx-auto">
+        {children}
+      </main>
+    </div>
   );
 }

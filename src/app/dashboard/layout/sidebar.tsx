@@ -1,10 +1,5 @@
 import React from "react";
-import { TabKey } from "../page";
-
-interface Props {
-  activeTab: TabKey;
-  onChangeTab: (tab: TabKey) => void;
-}
+import type { TabKey } from "../page";
 
 const tabs: { key: TabKey; label: string }[] = [
   { key: "overview", label: "Overview" },
@@ -14,26 +9,27 @@ const tabs: { key: TabKey; label: string }[] = [
   { key: "attendees", label: "Attendees" },
 ];
 
-const Sidebar: React.FC<Props> = ({ activeTab, onChangeTab }) => (
-  <nav className="w-64 bg-gray-100 h-full p-4">
-    <h1 className="text-xl font-bold mb-6">Dashboard</h1>
-    <ul>
+const Sidebar: React.FC<{
+  activeTab: TabKey;
+  onChangeTab: (tab: TabKey) => void;
+}> = ({ activeTab, onChangeTab }) => (
+  <aside className="w-64 bg-gray-100 h-full p-6">
+    <nav className="flex flex-col gap-4">
       {tabs.map((tab) => (
-        <li key={tab.key}>
-          <button
-            className={`block w-full text-left py-2 px-3 rounded ${
-              activeTab === tab.key
-                ? "bg-blue-500 text-white"
-                : "hover:bg-gray-200"
-            }`}
-            onClick={() => onChangeTab(tab.key)}
-          >
-            {tab.label}
-          </button>
-        </li>
+        <button
+          key={tab.key}
+          className={`text-left px-4 py-2 rounded ${
+            activeTab === tab.key
+              ? "bg-blue-600 text-white"
+              : "hover:bg-blue-100"
+          }`}
+          onClick={() => onChangeTab(tab.key)}
+        >
+          {tab.label}
+        </button>
       ))}
-    </ul>
-  </nav>
+    </nav>
+  </aside>
 );
 
 export default Sidebar;

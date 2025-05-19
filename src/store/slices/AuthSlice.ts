@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 
 interface Login {
   email: string;
@@ -7,6 +7,7 @@ interface Login {
 }
 
 export interface loginState {
+  id: number | null;
   email: string;
   password: string;
   loading: boolean;
@@ -16,8 +17,9 @@ export interface loginState {
 }
 
 const initialState: loginState = {
-  email: '',
-  password: '',
+  id: null,
+  email: "",
+  password: "",
   loading: false,
   error: null,
   isAuthenticated: false,
@@ -26,7 +28,15 @@ const initialState: loginState = {
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
-  async (userData: { fullName: string; email: string; password: string; referralCode?: string }, { rejectWithValue }) => {
+  async (
+    userData: {
+      fullName: string;
+      email: string;
+      password: string;
+      referralCode?: string;
+    },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
@@ -41,57 +51,59 @@ export const registerUser = createAsyncThunk(
 
       return await response.json();
     } catch (error: any) {
-      return rejectWithValue(error.message || "Terjadi kesalahan saat register");
+      return rejectWithValue(
+        error.message || "Terjadi kesalahan saat register"
+      );
     }
   }
 );
 
 export const loginUser = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (user: Login, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/auth/login', user);
+      const response = await axios.post("/api/auth/login", user);
 
       const fullName = response.data.data.fullName;
-      localStorage.setItem('fullname', fullName);
+      localStorage.setItem("fullname", fullName);
       return { fullName };
     } catch (error) {
-      return rejectWithValue('Failed to login');
+      return rejectWithValue("Failed to login");
     }
   }
 );
 
 export const isAuthenticatedUser = createAsyncThunk(
-  'auth/isAuthenticated',
+  "auth/isAuthenticated",
   async (_, { rejectWithValue }) => {
-    console.log('isAuthenticatedUser thunk started');
+    console.log("isAuthenticatedUser thunk started");
     try {
-      console.log('Making API call to /api/auth/me');
-      const response = await axios.get('/api/auth/me');
-      console.log('API call successful:', response.data);
-      return true
+      console.log("Making API call to /api/auth/me");
+      const response = await axios.get("/api/auth/me");
+      console.log("API call successful:", response.data);
+      return true;
     } catch (error) {
-      console.error('API call failed:', error);
+      console.error("API call failed:", error);
       //return rejectWithValue('User not authenticated');
     }
   }
 );
 
 export const loadUserFromLocalStorage = createAsyncThunk(
-  'auth/loadUserFromLocalStorage',
+  "auth/loadUserFromLocalStorage",
   async (_, { rejectWithValue }) => {
-    const fullname = localStorage.getItem('fullname');
+    const fullname = localStorage.getItem("fullname");
 
     if (fullname) {
       return { fullName: fullname };
     } else {
-      return rejectWithValue('No user data in localStorage');
+      return rejectWithValue("No user data in localStorage");
     }
   }
 );
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setEmail: (state, action: PayloadAction<string>) => {
@@ -101,14 +113,14 @@ const authSlice = createSlice({
       state.password = action.payload;
     },
     clearAuthState: (state) => {
-      state.email = '';
-      state.password = '';
+      state.email = "";
+      state.password = "";
       state.loading = false;
       state.error = null;
       state.fullname = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('fullname');
-      localStorage.removeItem('username');
+      localStorage.removeItem("fullname");
+      localStorage.removeItem("username");
     },
   },
   extraReducers: (builder) => {
@@ -129,31 +141,25 @@ const authSlice = createSlice({
       .addCase(isAuthenticatedUser.pending, (state) => {
         state.loading = true;
         state.error = null;
-        console.log('Checking authentication...');
+        console.log("Checking authentication...");
       })
       .addCase(isAuthenticatedUser.fulfilled, (state) => {
         state.loading = false;
         state.isAuthenticated = true;
-        console.log('User is authenticated', state.isAuthenticated);
+        console.log("User is authenticated", state.isAuthenticated);
       })
       .addCase(isAuthenticatedUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
         state.isAuthenticated = false;
-        console.log('User is not authenticated', state.isAuthenticated);
+        console.log("User is not authenticated", state.isAuthenticated);
       })
       .addCase(loadUserFromLocalStorage.fulfilled, (state, action) => {
         state.fullname = action.payload.fullName;
         state.isAuthenticated = true;
       })
-      .addCase(loadUserFromLocalStorage.rejected, (state) => {
-    
-      });
+      .addCase(loadUserFromLocalStorage.rejected, (state) => {});
   },
 });
-
-
-
-
 
 export default authSlice.reducer;
